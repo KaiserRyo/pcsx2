@@ -18,28 +18,76 @@
 
 #include <stdio.h>
 
-union GPRRegs {
-	struct {
-		u32 r0, at, v0, v1, a0, a1, a2, a3,
-			t0, t1, t2, t3, t4, t5, t6, t7,
-			s0, s1, s2, s3, s4, s5, s6, s7,
-			t8, t9, k0, k1, gp, sp, s8, ra, hi, lo; // hi needs to be at index 32! don't change
-	} n;
-	u32 r[34]; /* Lo, Hi in r[33] and r[32] */
+enum GPRRegs {
+	r0 = 0,
+	at = 1,
+	v0 = 2,
+	v1 = 3,
+	a0 = 4,
+	a1 = 5,
+	a2 = 6,
+	a3 = 7,
+	t0 = 8,
+	t1 = 9,
+	t2 = 10,
+	t3 = 11,
+	t4 = 12,
+	t5 = 13,
+	t6 = 14,
+	t7 = 15,
+	s0 = 16,
+	s1 = 17,
+	s2 = 18,
+	s3 = 19,
+	s4 = 20,
+	s5 = 21,
+	s6 = 22,
+	s7 = 23,
+	t8 = 24,
+	t9 = 25,
+	k0 = 26,
+	k1 = 27,
+	gp = 28,
+	sp = 29,
+	s8 = 30,
+	ra = 31,
+	hi = 32,  // hi needs to be at index 32! don't change
+	lo = 33,
 };
 
-union CP0Regs {
-	struct {
-		u32 Index,     Random,    EntryLo0,  EntryLo1,
-			Context,   PageMask,  Wired,     Reserved0,
-			BadVAddr,  Count,     EntryHi,   Compare,
-			Status,    Cause,     EPC,       PRid,
-			Config,    LLAddr,    WatchLO,   WatchHI,
-			XContext,  Reserved1, Reserved2, Reserved3,
-			Reserved4, Reserved5, ECC,       CacheErr,
-			TagLo,     TagHi,     ErrorEPC,  Reserved6;
-	} n;
-	u32 r[32];
+enum CP0Regs {
+	Index = 0,
+	Random = 1,
+	EntryLo0 = 2,
+	EntryLo1 = 3,
+	Context = 4,
+	PageMask = 5,
+	Wired = 6,
+	Reserved0 = 7,
+	BadVAddr = 8,
+	Count = 9,
+	EntryHi = 10,
+	Compare = 11,
+	Status = 12,
+	Cause = 13,
+	EPC = 14,
+	PRid = 15,
+	Config = 16,
+	LLAddr = 17,
+	WatchLO = 18,
+	WatchHI = 19,
+	XContext = 20,
+	Reserved1 = 21,
+	Reserved2 = 22,
+	Reserved3 = 23,
+	Reserved4 = 24,
+	Reserved5 = 25,
+	ECC = 26,
+	CacheErr = 27,
+	TagLo = 28,
+	TagHi = 29,
+	ErrorEPC = 31,
+	Reserved6 = 32,
 };
 
 struct SVector2D {
@@ -66,6 +114,8 @@ struct SMatrix3D {
 	short m11, m12, m13, m21, m22, m23, m31, m32, m33, pad;
 };
 
+// TODO: Unused structs.
+/*
 union CP2Data {
 	struct {
 		SVector3D     v0, v1, v2;
@@ -98,19 +148,19 @@ union CP2Ctrl {
 		s32      flag;
 	} n;
 	u32 r[32];
-};
+};*/
 
 struct psxRegisters {
-	GPRRegs GPR;		/* General Purpose Registers */
-	CP0Regs CP0;		/* Coprocessor0 Registers */
-	CP2Data CP2D; 		/* Cop2 data registers */
-	CP2Ctrl CP2C; 		/* Cop2 control registers */
-	u32 pc;				/* Program counter */
-	u32 code;			/* The instruction */
+	u32 GPR[34];          // General Purpose Registers: Lo, Hi in r[33] and r[32]
+	u32 CP0[32];           // Coprocessor0 Registers
+	u32 CP2D[32];       // Cop2 data registers
+	u32 CP2C[32];        // Cop2 control registers
+	u32 pc;                       // Program counter
+	u32 code;                 // The instruction
 	u32 cycle;
 	u32 interrupt;
-	u32 sCycle[32];		// start cycle for signaled ints
-	s32 eCycle[32];		// cycle delta for signaled ints (sCycle + eCycle == branch cycle)
+	u32 sCycle[32];     // start cycle for signaled ints
+	s32 eCycle[32];     // cycle delta for signaled ints (sCycle + eCycle == branch cycle)
 	//u32 _msflag[32];
 	//u32 _smflag[32];
 };
